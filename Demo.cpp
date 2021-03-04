@@ -34,7 +34,7 @@ Graph ::Graph(string str)
     cout<<"\nFile name:"<<filename<<endl;
     cout<<"Vertex:"<<nvertex<<endl;
     cout<<"Edges:"<<nedges<<endl;
-    /adjmat.resize(nvertex,vector<bool>(nvertex,0));
+    adjmat.resize(nvertex,vector<bool>(nvertex,0));
     // edges.resize(nedges,vector<int>(2));
     for (int i=0; i<nedges; i++)
     {   
