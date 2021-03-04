@@ -27,12 +27,10 @@ Graph ::Graph(string str)
     int x,y;
     char e;
     string s;
-    inData>>s;
     // while (getline(inData , s))
     //     cout << s <<'\n';
     while(s != "edge")
-            inData >> s;
-    inData>>nvertex>>nedges;
+            inData >> s >> nvertex >> nedges;
     cout<<"\nFile name:"<<filename<<endl;
     cout<<"Vertex:"<<nvertex<<endl;
     cout<<"Edges:"<<nedges<<endl;
