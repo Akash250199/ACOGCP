@@ -1,13 +1,12 @@
 #include<iostream>
 #include<vector>
 #include<fstream>
-
+#include<numeric>
 using namespace std;
 class Graph
 {
 public:
     string filename;
-    // vector<vector <int>> edges;
     vector<vector <bool>> adjmat;
     int nvertex,nedges;
     Graph(string str);
@@ -26,25 +25,30 @@ Graph ::Graph(string str)
     }
     int x,y;
     char e;
-    string s;
-    // while (getline(inData , s))
-    //     cout << s <<'\n';
+    string s;  
     while(s != "edge")
-            inData >> s >> nvertex >> nedges;
+            inData>>s>>nvertex>>nedges;
     cout<<"\nFile name:"<<filename<<endl;
     cout<<"Vertex:"<<nvertex<<endl;
     cout<<"Edges:"<<nedges<<endl;
     adjmat.resize(nvertex,vector<bool>(nvertex,0));
-    // edges.resize(nedges,vector<int>(2));
     for (int i=0; i<nedges; i++)
     {   
         
     	inData >>e>> x >> y;
-        // edges[i][0]=x;
-        // edges[i][1]=y;
-        adjmat[x-1][y-1]=1;  //for indexing of matrix like at adjmat[0][1]=1 and vice versa for first input edge of input files test.txt i.e (e 1 2)
+        adjmat[x-1][y-1]=1;  
         adjmat[y-1][x-1]=1;
     }
+    int sum,max=0,max_degree;
+    for (int i = 0; i < nvertex; i++)
+    {
+        sum=accumulate(adjmat[i].begin(),adjmat[i].end(),0);
+        if(max<sum)
+            max=sum;
+    }
+    max_degree=max;
+    cout<<"Max Degree: "<<max_degree<<endl;
+    
 }
 void Graph::AdjMatrix()
 {
