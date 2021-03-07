@@ -25,16 +25,14 @@ Graph ::Graph(string str)
     }
     int x,y;
     char e;
-    string s;  
-    while(s != "edge")
-            inData>>s>>nvertex>>nedges;
+    string s;
+    inData>>nvertex>>nedges;
     cout<<"\nFile name:"<<filename<<endl;
     cout<<"Vertex:"<<nvertex<<endl;
     cout<<"Edges:"<<nedges<<endl;
     adjmat.resize(nvertex,vector<bool>(nvertex,0));
     for (int i=0; i<nedges; i++)
-    {   
-        
+    {    
     	inData >>e>> x >> y;
         adjmat[x-1][y-1]=1;  
         adjmat[y-1][x-1]=1;
@@ -47,8 +45,7 @@ Graph ::Graph(string str)
             max=sum;
     }
     max_degree=max;
-    cout<<"Max Degree: "<<max_degree<<endl;
-    
+    cout<<"Max Degree: "<<max_degree<<endl;  
 }
 void Graph::AdjMatrix()
 {
