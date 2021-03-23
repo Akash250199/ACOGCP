@@ -27,9 +27,11 @@ Graph ::Graph(string str)
     char e;
     string s;
     inData >> no_vertex >> no_edges;
-    cout << "\nFile name:" << filename << endl;
-    cout << "Vertex:" << no_vertex << endl;
-    cout << "Edges:" << no_edges << endl;
+    cout<<"\n\n Graph Coloring Using Ant Colony Optimization :"<<endl;
+    cout<<"<---------------------------------------------->"<<endl;
+    cout<<"File name:"<<filename<<endl;
+    cout<<"Vertex:"<<no_vertex<<endl;
+    cout<<"Edges:"<<no_edges<<endl;
     adjmatrix.resize(no_vertex, vector<bool>(no_vertex, 0));
     for (int i = 0; i < no_edges; i++)
     {
@@ -67,13 +69,15 @@ public:
     vector<int> color;
     int max_degree1, vertex, edges, varcolor;
     ANTCOL(const Graph &g1);
-    bool check();
+    bool globalcheck();
     int countDistinct();
+    void compute();
+    void printcolor();
 };
 ANTCOL::ANTCOL(const Graph &g1)
 {
     filename1 = g1.filename;
-    max_degree1 = g1.max_degree+1;
+    max_degree1 = g1.max_degree;
     vertex = g1.no_vertex;
     edges = g1.no_edges;
     adjmatrix1.resize(vertex, vector<bool>(vertex));
@@ -86,7 +90,7 @@ ANTCOL::ANTCOL(const Graph &g1)
         }
     }
 }
-bool ANTCOL::check()
+bool ANTCOL::globalcheck()
 {
     int i, j, conflict = 0;
     for (i = 0; i < vertex; i++)
@@ -96,7 +100,7 @@ bool ANTCOL::check()
             if ((color[i] == color[j]) && (adjmatrix1[i][j]))
             {
                 conflict = 1;
-                cout << "Conflict Between Vertex " << i+1 << " " << j+1 << endl;
+                // cout << "Conflict Between Vertex " << i+1 << " " << j+1 << endl;
             }
         }
     }
@@ -115,10 +119,47 @@ int ANTCOL::countDistinct()
             A.insert(color[i]);
         }
     }
-    cout<<A.size();
     return A.size();
 }
-
+void ANTCOL::compute()
+{
+    int j,k;
+    bool result;
+    for(j=0;j<vertex;j++)
+    {
+        varcolor=countDistinct();
+        result=globalcheck();
+        if(result==1)
+        {
+            return;
+        }
+        for(k=0;k<vertex;k++)
+        {
+            if(j!=k)
+            {
+                if((color[j]==color[k]) && (adjmatrix1[j][k]))
+                {
+                    if(color[k]<=max_degree1)
+                    {
+                        color[k]=color[k]+1;
+                    }
+                    else{
+                        color[k]=color[k]%(max_degree1+1)+1;
+                    }
+                    j=0;
+                    k=0;
+                }
+            }
+        }
+    }
+}
+void ANTCOL::printcolor()
+{
+    for (int j = 0; j < vertex; j++)
+    {
+        cout<<color[j]<<"\t";
+    }
+}
 int main(int argc, char *argv[])
 {
 
@@ -126,11 +167,13 @@ int main(int argc, char *argv[])
     {
         string file = argv[1];
         Graph g(file);
-        g.AdjMatrix();
+        //g.AdjMatrix();
         ANTCOL a(g);
-        a.check();
-        a.countDistinct();
-    }
+        a.compute();
+        int Chromatic_Number=a.countDistinct();
+        cout<<"\nChromatic Number: "<<Chromatic_Number<<endl;
+        a.printcolor();
 
+    }
     return 0;
 }
