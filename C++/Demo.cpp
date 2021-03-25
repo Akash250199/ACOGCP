@@ -64,12 +64,14 @@ void Graph::AdjMatrix()
 class ANTCOL
 {
 public:
+    long int iterations=0;
     string filename1;
     vector<vector<bool>> adjmatrix1;
     vector<int> color;
     int max_degree1, vertex, edges, varcolor;
     ANTCOL(const Graph &g1);
     bool globalcheck();
+    void finalcheck();
     int countDistinct();
     void compute();
     void printcolor();
@@ -92,40 +94,25 @@ ANTCOL::ANTCOL(const Graph &g1)
 }
 bool ANTCOL::globalcheck()
 {
-    int i, j, conflict = 0;
+    int i, j;
     for (i = 0; i < vertex; i++)
     {
         for (j = 0; j < vertex; j++)
         {
             if ((color[i] == color[j]) && (adjmatrix1[i][j]))
             {
-                conflict = 1;
-                // cout << "Conflict Between Vertex " << i+1 << " " << j+1 << endl;
+                return 0;
+                
             }
         }
     }
-    if(conflict==1){
-        return 0;
-    }
     return 1; 
-}
-int ANTCOL::countDistinct()
-{
-    unordered_set<int> A;
-    for(int i=0;i<vertex;i++)
-    {
-        if(A.find(color[i])==A.end())
-        {
-            A.insert(color[i]);
-        }
-    }
-    return A.size();
 }
 void ANTCOL::compute()
 {
     int j,k;
     bool result;
-    for(j=0;j<vertex;j++)
+    for(j=1;j<vertex;j++)
     {
         varcolor=countDistinct();
         result=globalcheck();
@@ -146,12 +133,43 @@ void ANTCOL::compute()
                     else{
                         color[k]=color[k]%(max_degree1+1)+1;
                     }
-                    j=0;
+                    j=1;
                     k=0;
                 }
+                // cout<<"Color: ";
+                // for (int i : color) 
+                //     cout << i << " "; 
+                // cout<<endl;
+            }
+        }
+        iterations++;
+    }
+}
+void ANTCOL::finalcheck()
+{   
+    int i,j;
+    for(i=0;i<vertex;i++)
+    {   
+        for(j=0;j<vertex;j++)
+        {
+            if((color[i]==color[j]) && (adjmatrix1[i][j]))
+            {
+                cout << "Conflict Between Vertex : " << i+1 << " " << j+1 << endl;
             }
         }
     }
+}
+int ANTCOL::countDistinct()
+{
+    unordered_set<int> A;
+    for(int i=0;i<vertex;i++)
+    {
+        if(A.find(color[i])==A.end())
+        {
+            A.insert(color[i]);
+        }
+    }
+    return A.size();
 }
 void ANTCOL::printcolor()
 {
@@ -159,6 +177,7 @@ void ANTCOL::printcolor()
     {
         cout<<color[j]<<"\t";
     }
+    cout<<endl;
 }
 int main(int argc, char *argv[])
 {
@@ -171,8 +190,16 @@ int main(int argc, char *argv[])
         ANTCOL a(g);
         a.compute();
         int Chromatic_Number=a.countDistinct();
-        cout<<"\nChromatic Number: "<<Chromatic_Number<<endl;
+        cout<<"\nChromatic Number: "<<Chromatic_Number<< " | " <<"iterations: "<<a.iterations<<endl;
         a.printcolor();
+        a.finalcheck();
+        if(a.globalcheck()==1)
+        {
+            cout<<endl<<"This graph is properly Colored :) ";
+        }
+        else{
+            cout<<endl<<"This graph is not properly colored :( ";
+        }
 
     }
     return 0;
