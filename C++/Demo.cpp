@@ -12,12 +12,15 @@ public:
     int no_vertex, no_edges,max_degree;
     Graph(string str);
     void AdjMatrix();
+    const string dir="data/";
+    string file_with_dir;
 };
 
 Graph ::Graph(string str)
 {
     filename = str;
-    ifstream inData(str);
+    file_with_dir= dir+filename; 
+    ifstream inData(file_with_dir);
     if (inData.fail())
     {
         cout << "\nFilename doesn't exist\n";
@@ -195,10 +198,10 @@ int main(int argc, char *argv[])
         a.finalcheck();
         if(a.globalcheck()==1)
         {
-            cout<<endl<<"This graph is properly Colored :) ";
+            cout<<endl<<"This graph is properly Colored ";
         }
         else{
-            cout<<endl<<"This graph is not properly colored :( ";
+            cout<<endl<<"This graph is not properly colored ";
         }
 
     }
