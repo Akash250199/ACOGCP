@@ -6,21 +6,22 @@
 using namespace std;
 class Graph
 {
-public:
-    string filename;
-    vector<vector<bool>> adjmatrix;
-    int no_vertex, no_edges,max_degree;
-    Graph(string str);
-    void AdjMatrix();
-    const string dir="data/";
-    string file_with_dir;
+    public:
+        string filename;
+        vector<vector<bool>> adjmatrix;
+        int no_vertex, no_edges,max_degree;
+        Graph(string str);
+        void AdjMatrix();
+        //const string dir="assets/";
+    
 };
 
 Graph ::Graph(string str)
 {
     filename = str;
-    file_with_dir= dir+filename; 
-    ifstream inData(file_with_dir);
+    //string file_with_dir= dir+filename;
+    //ifstream inData(file_with_dir);
+    ifstream inData(str);
     if (inData.fail())
     {
         cout << "\nFilename doesn't exist\n";
@@ -66,18 +67,18 @@ void Graph::AdjMatrix()
 }
 class ANTCOL
 {
-public:
-    long int iterations=0;
-    string filename1;
-    vector<vector<bool>> adjmatrix1;
-    vector<int> color;
-    int max_degree1, vertex, edges, varcolor;
-    ANTCOL(const Graph &g1);
-    bool globalcheck();
-    void finalcheck();
-    int countDistinct();
-    void compute();
-    void printcolor();
+    public:
+        long int iterations=0;
+        string filename1;
+        vector<vector<bool>> adjmatrix1;
+        vector<int> color;
+        int max_degree1, vertex, edges, varcolor;
+        ANTCOL(const Graph &g1);
+        bool globalcheck();
+        void finalcheck();
+        int countDistinct();
+        void compute();
+        void printcolor();
 };
 ANTCOL::ANTCOL(const Graph &g1)
 {
@@ -163,7 +164,7 @@ void ANTCOL::finalcheck()
     }
 }
 int ANTCOL::countDistinct()
-{
+{   
     unordered_set<int> A;
     for(int i=0;i<vertex;i++)
     {
