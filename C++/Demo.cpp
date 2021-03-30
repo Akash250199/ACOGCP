@@ -12,16 +12,15 @@ class Graph
         int no_vertex, no_edges,max_degree;
         Graph(string str);
         void AdjMatrix();
-        //const string dir="assets/";
+        const string dir="assets/";
     
 };
 
 Graph ::Graph(string str)
 {
     filename = str;
-    //string file_with_dir= dir+filename;
-    //ifstream inData(file_with_dir);
-    ifstream inData(str);
+    string file_with_dir= dir+filename;
+    ifstream inData(file_with_dir);
     if (inData.fail())
     {
         cout << "\nFilename doesn't exist\n";
